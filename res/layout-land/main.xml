@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="30dip" android:orientation="horizontal">
+	<LinearLayout android:id="@+id/LinearLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent" android:layout_gravity="center" android:orientation="vertical">
+		<TextView android:layout_height="wrap_content" android:text="@string/main_title" android:layout_width="fill_parent" android:id="@+id/TextView01" android:textSize="24.5sp" android:gravity="center"></TextView>
+		<TableLayout android:id="@+id/TableLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center" android:stretchColumns="*">
+			<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TableRow01">
+				<Button android:text="@string/continue_label" android:id="@+id/continue_button" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
+				<Button android:text="@string/new_game_label" android:id="@+id/new_game_button" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
+			</TableRow>
+			<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TableRow02">
+				<Button android:text="@string/about_label" android:id="@+id/abount_button" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
+				<Button android:text="@string/exit_label" android:id="@+id/exit_button" android:layout_height="wrap_content" android:layout_width="fill_parent"></Button>
+			</TableRow>
+		</TableLayout>
+	</LinearLayout>
+</LinearLayout>
