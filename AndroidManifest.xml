@@ -13,6 +13,8 @@
         </activity>
 
     <activity android:name=".About" android:theme="@android:style/Theme.Dialog" android:label="@string/about_title"></activity>
+<activity android:name=".Settings" android:label="@string/settings_label"></activity>
+<activity android:name=".Graphics"></activity>
 </application>
 
 
