@@ -28,4 +28,7 @@ each column, and each of the 3x3 boxes
 <string name="medium_label">Medium</string>
 <string name="hard_label">Hard</string>
 <color name="mycolor">#7fff00ff</color>
+<string name="game_title">Game</string>
+<string name="no_moves_label">No moves</string>
+<string name="keypad_title">Keypad</string>
 </resources>

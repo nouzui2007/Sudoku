@@ -14,7 +14,7 @@ public class Game extends Activity {
 	
 	private int puzzle[] = new int [9 * 9];
 	
-//	private PuzzleView puzzleView;
+	private PuzzleView puzzleView;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +22,27 @@ public class Game extends Activity {
 		Log.d(TAG, "onCreate");
 		
 		int diff = getIntent().getIntExtra(KEY_DIFFICULTY, DIFFICULTY_EASY);
+		puzzle = getPuzzle(diff);
+		calculateUsedTiles();
 		
+		puzzleView = new PuzzleView(this);
+		setContentView(puzzleView);
+		puzzleView.requestFocus();
+	}
+
+	private void calculateUsedTiles() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private int[] getPuzzle(int diff) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getTileString(int i, int j) {
+		// TODO Auto-generated method stub
+		Log.d(TAG, "getTileString(" + i + ", " + j + ")");
+		return "7";
 	}
 }
