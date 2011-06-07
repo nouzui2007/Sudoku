@@ -13,6 +13,7 @@ public class Game extends Activity {
 	public static final int DIFFICULTY_HARD = 2;
 	
 	private int puzzle[] = new int [9 * 9];
+	private final int used[][][] = new int[9][9][];
 	
 	private PuzzleView puzzleView;
 	
@@ -30,9 +31,70 @@ public class Game extends Activity {
 		puzzleView.requestFocus();
 	}
 
+	/**
+	 * マスごとのつかえない数リストを計算する
+	 */
 	private void calculateUsedTiles() {
-		// TODO Auto-generated method stub
+		for (int x = 0; x < 9; x++) {
+			for (int y = 0; y < 9; y++) {
+				used[x][y] = calculateUsedTiles(x, y);
+			}
+		}
+	}
+
+	/**
+	 * 指定されたマスですでに使われている数を計算
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private int[] calculateUsedTiles(int x, int y) {
+		int c[] = new int[9];
 		
+		// 横
+		for (int i = 0; i < 9; i++) {
+			if (i == y) 
+				continue;
+			int t  = getTile(x, i);
+			if (t != 0)
+				c[t - 1] = t;
+		}
+		
+		// 縦
+		for (int i = 0; i < 9; i++) {
+			if (i == x)
+				continue;
+			int  t = getTile(i, y);
+			if (t != 0)
+				c[t - 1] = t;
+		}
+		
+		// ブロック
+		int startx = (x / 3) * 3;
+		int starty = (y / 3) * 3;
+		for (int i = startx; i < startx + 3; i++) {
+			for (int j = starty; j < starty + 3; j++) {
+				if (i == x && j == y)
+					continue;
+				int t = getTile(i, j);
+				if (t != 0)
+					c[t - 1] = t;
+			}
+		}
+		
+		// 圧縮
+		int nused = 0;
+		for (int t : c) {
+			if (t != 0)
+				c[nused++] = t;
+		}
+		
+		return c;
+	}
+
+	private int getTile(int x, int y) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 	private int[] getPuzzle(int diff) {
@@ -44,5 +106,45 @@ public class Game extends Activity {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "getTileString(" + i + ", " + j + ")");
 		return "7";
+	}
+
+	/**
+	 * 有効な手のときにのみ、マスを変更する
+	 * @param x
+	 * @param y
+	 * @param value
+	 * @return
+	 */
+	public boolean setTileIfValid(int x, int y, int value) {
+		int tiles[] = getUsedTiles(x, y);
+		if (value != 0) {
+			for (int tile: tiles) {
+				if (tile == value)
+					return false;
+			}
+		}
+		setTile(x, y, value);
+		calculateUsedTiles();
+		return true;
+	}
+
+	private void setTile(int x, int y, int value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void showKeypadOrError(int selX, int selY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/**
+	 * 現在のマスの、ブロックの使用済の数を配列で返す
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public int[] getUsedTiles(int x, int y) {
+		return this.used[x][y];
 	}
 }
