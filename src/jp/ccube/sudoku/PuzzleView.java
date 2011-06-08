@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 
 public class PuzzleView extends View {
 	private static final String TAG = "Sudoku";
@@ -211,6 +212,8 @@ public class PuzzleView extends View {
 		} else {
 			//このマスの数値は選べない値
 			Log.d(TAG, "setSelectedTile: invalid: " + tile);
+			//画面を揺らす
+			startAnimation(AnimationUtils.loadAnimation(game, R.anim.shake));
 		}
 	}
 }

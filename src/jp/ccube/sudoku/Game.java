@@ -1,8 +1,11 @@
 package jp.ccube.sudoku;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Toast;
 
 public class Game extends Activity {
 	private static final String TAG = "Sudoku";
@@ -16,6 +19,16 @@ public class Game extends Activity {
 	private final int used[][][] = new int[9][9][];
 	
 	private PuzzleView puzzleView;
+	
+	private final String easyPuzzle =   "360000000004230800000004200" +
+										  "070460003820000014500013020" +
+										  "001900000007048300000000045";
+	private final String mediumPuzzle = "650000070000506000014000005" +
+										  "007009000002314700000700800" +
+										  "500000630000201000030000097";
+	private final String hardPuzzle =   "009000000080605020501078000" +
+										  "000000700706040102004000000" +
+										  "000720903090301080000000600";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,20 +105,64 @@ public class Game extends Activity {
 		return c;
 	}
 
+	/**
+	 * 指定したマスの数字を取得
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	private int getTile(int x, int y) {
-		// TODO Auto-generated method stub
-		return 0;
+		return puzzle[y * 9 + x];
 	}
 
+	/**
+	 * 難易度にあった新しいパズルを返す
+	 * @param diff
+	 * @return
+	 */
 	private int[] getPuzzle(int diff) {
-		// TODO Auto-generated method stub
-		return null;
+		String puz;
+		// TODO 前回の続行は未対応
+		
+		switch (diff) {
+		case DIFFICULTY_HARD:
+			puz = hardPuzzle;
+			break;
+		case DIFFICULTY_MEDIUM:
+			puz = mediumPuzzle;
+			break;
+		case DIFFICULTY_EASY:
+		default:
+			puz = easyPuzzle;
+			break;
+		}
+		
+		return fromPuzzleString(puz);
 	}
 
-	public String getTileString(int i, int j) {
-		// TODO Auto-generated method stub
-		Log.d(TAG, "getTileString(" + i + ", " + j + ")");
-		return "7";
+	private int[] fromPuzzleString(String string) {
+		int[] puz = new int[string.length()];
+		for (int i = 0; i < puz.length; i++) {
+			puz[i] = string.charAt(i) - '0';
+		}
+
+		return puz;
+	}
+
+	/**
+	 * 指定された座標のマスの数字を文字列で返す
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public String getTileString(int x, int y) {
+		Log.d(TAG, "getTileString(" + x + ", " + y + ")");
+		
+		int v = getTile(x, y);
+		if (v == 0)
+			return "";
+		else
+			return String.valueOf(v);
 	}
 
 	/**
@@ -128,14 +185,40 @@ public class Game extends Activity {
 		return true;
 	}
 
+	/**
+	 * 指定座標のマスに数字を表示する
+	 * @param x
+	 * @param y
+	 * @param value
+	 */
 	private void setTile(int x, int y, int value) {
-		// TODO Auto-generated method stub
-		
+		puzzle[y * 9 + x] = value;
 	}
 
-	public void showKeypadOrError(int selX, int selY) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * 有効な手があれば、キーパッドをオープンする
+	 * @param x
+	 * @param y
+	 */
+	public void showKeypadOrError(int x, int y) {
+		int tiles[] = getUsedTiles(x, y);
+		if (tiles.length == 9) {
+			Toast toast = Toast.makeText(this, R.string.no_moves_label, Toast.LENGTH_SHORT);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
+		} else {
+			Log.d(TAG, "showKeypad: used=" + toPuzzleString(tiles));
+			Dialog v = new Keypad(this, tiles, puzzleView);
+			v.show();
+		}
+	}
+
+	private String toPuzzleString(int[] puz) {
+		StringBuilder buf = new StringBuilder();
+		for (int element : puz)
+			buf.append(element);
+
+		return buf.toString();
 	}
 
 	/**
